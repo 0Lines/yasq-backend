@@ -1,17 +1,17 @@
 const express = require('express')
 const ytdl = require('ytdl-core');
+
 const app = express()
 const port = 3000
 
 app.use(express.json())
 
 app.get('/', (req, res) => res.send('Hello World!'))
-app.post('/', (req, res) => res.send('Got a POST request'))
 
 app.post('/video', async (req, res) => {
   const { url } = req.body;
   const songInfo = await ytdl.getBasicInfo(url);
-  res.json(songInfo.videoDetails)
+  res.json(songInfo.videoDetails);
 })
 
 app.listen(port, () => {
