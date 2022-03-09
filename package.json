@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/0Lines/yasq-backend#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "ytdl-core": "^4.10.1"
