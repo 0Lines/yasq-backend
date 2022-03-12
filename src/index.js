@@ -1,6 +1,7 @@
 const express = require('express')
 const ytdl = require('ytdl-core');
 const cors = require('cors');
+
 require('dotenv').config();
 
 const app = express();
@@ -13,12 +14,12 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 app.post('/video', async (req, res) => {
   const { url } = req.body;
+  const validUrl = await ytdl.validateURL(url);
 
-  const songInfo = await ytdl.getBasicInfo(url).catch((err) => {
-    console.log(err);
-    res.send("Error").status(500);
-  });
-
+  if(!validUrl)
+    res.status(404).send("Video not found!").end();
+  
+  const songInfo = await ytdl.getBasicInfo(url);
   res.json(songInfo.videoDetails);
 })
 
