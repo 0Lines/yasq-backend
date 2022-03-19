@@ -1,14 +1,27 @@
 const express = require('express')
 const ytdl = require('ytdl-core');
 const cors = require('cors');
+const http = require('http');
+const { Server } = require("socket.io");
 
 require('dotenv').config();
 
 const app = express();
-const port = process.env.HOST_PORT;
+const port = process.env.PORT;
+const server = http.createServer(app);
+const io = new Server(server, {
+	cors: {
+		origin: "*",
+	}
+});
 
 app.use(express.json())
 app.use(cors());
+
+io.on('connection', (socket) => {
+	console.log('a user connected');
+});
+
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
@@ -28,3 +41,7 @@ app.post('/video', async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+server.listen(process.env.SOCKET_PORT, () => {
+	console.log(`listening on *:${process.env.SOCKET_PORT}`);
+});
