@@ -104,5 +104,5 @@ dist
 .tern-port
 
 # Ignore Audio/Video Files
-.mp3
-.mp4
+*.mp3
+*.mp4
