@@ -1,11 +1,14 @@
-const express = require('express')
-const ytdl = require('ytdl-core');
+const fs = require('fs')
 const cors = require('cors');
 const http = require('http');
+const { v4: uuidv4 } = require('uuid');
+const express = require('express')
+const ytdl = require('ytdl-core');
 const ffmpeg = require('fluent-ffmpeg')
-const fs = require('fs')
-const getStat = require('util').promisify(fs.stat)
 const { Server } = require('socket.io');
+const getStat = require('util').promisify(fs.stat)
+
+const User = require('./models/User.js');
 
 require('dotenv').config();
 
@@ -160,6 +163,29 @@ app.get('/stream-downloaded', async (req, res) => {
     stream.on('end', () => console.log('streaming complete'))
     stream.pipe(res)
 })
+
+
+//Generate random hash id, profile photo and name
+app.post('/create/user', async (req, res) => {
+
+    const {firstnames, lastnames} = require('./plugins/names.json');
+
+	const generateRandomNick = (listNames) => {
+		const rndint = Math.floor(Math.random() * listNames.length);
+
+		return listNames[rndint].charAt(0).toUpperCase() + listNames[rndint].slice(1);
+	}
+	
+	const user = new User({
+		id: uuidv4(),
+		firstname: generateRandomNick(firstnames),
+		lastname: generateRandomNick(lastnames),
+		profilesrc: "ai"
+	});
+
+	res.jsonp(user);
+});
+
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
