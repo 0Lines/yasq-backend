@@ -1,33 +1,31 @@
 const fs = require('fs')
 const cors = require('cors');
-const http = require('http');
-const { v4: uuidv4 } = require('uuid');
 const express = require('express')
 const ytdl = require('ytdl-core');
 const ffmpeg = require('fluent-ffmpeg')
-const { Server } = require('socket.io');
 const getStat = require('util').promisify(fs.stat)
+const http = require('http');
 
 const User = require('./models/User.js');
+const Utils = require('./plugins/Utils.js');
+
+const { v4: uuidv4 } = require('uuid');
+const { Server } = require('socket.io');
 
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT;
 const server = http.createServer(app);
-const io = new Server(server, {
-	cors: {
-		origin: "*",
-	}
-});
+const io = new Server(server, { cors: { origin: "*" }});
 
+app.use(express.static('public/resources/images'))
 app.use(express.json())
 app.use(cors());
 
 io.on('connection', (socket) => {
 	console.log('a user connected');
 });
-
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
@@ -164,26 +162,30 @@ app.get('/stream-downloaded', async (req, res) => {
     stream.pipe(res)
 })
 
-
-//Generate random hash id, profile photo and name
+// Generate random hash id, profile photo and name
+// TODO: setup for using database and ORM in the future
 app.post('/create/user', async (req, res) => {
 
     const {firstnames, lastnames} = require('./plugins/names.json');
 
 	const generateRandomNick = (listNames) => {
 		const rndint = Math.floor(Math.random() * listNames.length);
-
 		return listNames[rndint].charAt(0).toUpperCase() + listNames[rndint].slice(1);
 	}
-	
-	const user = new User({
+
+    const generateRandomImg = () => {
+        const photos = Utils.getAllFilesFromFolder("./public/resources/images");
+        const result = photos[Math.floor(Math.random() * photos.length)];
+
+        return result.replace("./public/resources/images", "");
+    }
+    
+	res.jsonp(new User({
 		id: uuidv4(),
 		firstname: generateRandomNick(firstnames),
 		lastname: generateRandomNick(lastnames),
-		profilesrc: "ai"
-	});
-
-	res.jsonp(user);
+		profilesrc: generateRandomImg(),
+	}));
 });
 
 
