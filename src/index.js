@@ -2,6 +2,7 @@ const fs = require('fs')
 const cors = require('cors');
 const express = require('express')
 const ytdl = require('ytdl-core');
+const ytpl = require('ytpl');
 const ffmpeg = require('fluent-ffmpeg')
 const getStat = require('util').promisify(fs.stat)
 const http = require('http');
@@ -31,10 +32,12 @@ app.get('/', (req, res) => res.send('Hello World!'))
 
 app.post('/video', async (req, res) => {
     const { url } = req.body;
+    
     const validUrl = await ytdl.validateURL(url);
+    const validPlaylist = await ytpl.validateID(url);
 
-	if(!validUrl) {
-		res.status(404).send('Video not found!').end();
+	if(!validUrl && !validPlaylist) {
+		res.status(404).send('Video or playlist not found!').end();
 		return;
 	}
 
