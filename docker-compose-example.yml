@@ -1,0 +1,23 @@
+version: "3"
+services:
+  db:
+    image: postgres:14
+    mem_limit: 1536MB
+    mem_reservation: 1G
+    environment:
+      POSTGRES_USER: yasq 
+      POSTGRES_PASSWORD: "yasq"
+      POSTGRES_DB: yasq
+    ports:
+    - "54321:5432"
+    networks:
+    - yasq_network 
+    volumes:
+    - pg-data:/var/lib/postgresql/data
+
+networks:
+  yasq_network:
+    driver: bridge
+
+volumes:
+  pg-data:

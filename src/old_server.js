@@ -16,7 +16,7 @@ const { Server } = require('socket.io');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.HTTP_PORT;
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" }});
 
@@ -81,25 +81,19 @@ app.get('/stream-source', async (req, res) => {
     let { url } = req.body
     url = 'https://www.youtube.com/watch?v=gBVBwtBRQoY'
     const validUrl = await ytdl.validateURL(url)
-
 	if(!validUrl) {
 		res.status(404).send('Video not found!').end()
 		return
 	}
-
     const stream = await ytdl(url)
     res.setHeader('Content-disposition', 'attachment; filename=' + 'test' + '.mp3')
     res.setHeader('Content-type', 'audio/mp3')
-
     proc = new ffmpeg({ source: stream })
-
     proc.setFfmpegPath(ffmpegLocation);
-
     proc.withAudioCodec('libmp3lame')
         .toFormat('mp3')
         .output(res)
         .run()
-
     proc.on('end', () => {
         console.log('Streaming is complete...')
     })

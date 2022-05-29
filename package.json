@@ -2,11 +2,11 @@
   "name": "yasq-backend",
   "version": "1.0.0",
   "description": "Node/Express backend for Yet Another Song Queue",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "node-serve": "node src/index.js",
-    "serve": "./node_modules/nodemon/bin/nodemon.js ./src/index.js"
+    "node-serve": "node src/server.js",
+    "serve": "./node_modules/nodemon/bin/nodemon.js ./src/server.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "fluent-ffmpeg": "^2.1.2",
+    "pg": "^8.7.3",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
     "ytdl-core": "^4.11.0",
