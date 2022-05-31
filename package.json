@@ -24,7 +24,7 @@
     "express": "^4.17.3",
     "fluent-ffmpeg": "^2.1.2",
     "pg": "^8.7.3",
-    "socket.io": "^4.4.1",
+    "socket.io": "^4.5.1",
     "uuid": "^8.3.2",
     "ytdl-core": "^4.11.0",
     "ytpl": "^2.3.0",
