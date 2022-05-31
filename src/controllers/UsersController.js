@@ -1,12 +1,10 @@
-const User = require('../models/User');
-const Utils = require('../plugins/Utils.js');
-const { v4: uuidv4 } = require('uuid');
-
-const usersRepository = require('../repositories/UsersRepository')
+const usersServices = require('../services/UsersServices')
 
 //TODO - Create exceptions, check if room exists and lots of other things
-const createUser = (req, res, next) => {
-    const user = usersRepository.insert(req.body);
+async function createUser (req, res, next) {
+    const { nickname, photo_link, id_room } = req.body;
+    
+    const user = usersServices.create(nickname, photo_link, id_room);
     res.status(200).send('User created!')
 }
 

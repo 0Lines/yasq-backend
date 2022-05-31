@@ -1,14 +1,14 @@
 class User {
     id = "";
-    firstname = "";
-    lastname = "";
-    profilesrc = "";
+    nickname = "";
+    photo_link = "";
+    id_room = "";
 
     constructor(params) {
-        this.id = params.id;
-        this.firstname = params.firstname;
-        this.lastname = params.lastname;
-        this.profilesrc = params.profilesrc;
+        this.id_user = params.id_user;
+        this.nickname = params.nickname;
+        this.photo_link = params.photo_link;
+        this.id_room = params.id_room;
     }
 }
   

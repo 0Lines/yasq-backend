@@ -1,16 +1,26 @@
 const pool = require('../database/db').pool
+const User = require('../models/User');
 
-const { v4: uuidv4 } = require('uuid');
-
-async function insert(user) {
-    const newUser = await pool.query(
-    `INSERT INTO Users (id_user, nickname, photo_link, id_room)
-     VALUES ($1, $2, $3, $4)
+async function insert(nickname, photo_link, id_room) {
+    const result = await pool.query(
+    `INSERT INTO Users (nickname, photo_link, id_room)
+     VALUES ($1, $2, $3)
      RETURNING *;`,
-    [uuidv4(), user.nickname, user.photo_link, user.id_room]
-    )
+    [nickname, photo_link, id_room]);
 
-    return newUser;
+    return resultToObject(result);
+}
+
+function resultToObject(result) {
+    if (!result.rows)
+        console.log('I should handle errors, but not yet :(');
+
+    return new User({
+        id_user : result.rows[0].id_user ?? '', 
+        nickname: result.rows[0].nickname ?? '', 
+        photo_link: result.rows[0].photo_link ?? '', 
+        id_room: result.rows[0].id_room ?? '', 
+    });  
 }
 
 module.exports = { insert }
