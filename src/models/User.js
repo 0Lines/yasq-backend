@@ -1,5 +1,5 @@
 class User {
-    id = "";
+    id_user = "";
     nickname = "";
     photo_link = "";
     id_room = "";
