@@ -8,4 +8,11 @@ async function createSong(req, res, next) {
     res.status(200).send(song)
 }
 
-module.exports = { createSong }
+async function getPlaylist(req, res, next) {
+    const { id_room } = req.body;
+
+    const playlist = await songsServices.getPlaylist(id_room);
+    res.status(200).send(playlist);
+}
+
+module.exports = { createSong, getPlaylist }

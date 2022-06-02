@@ -24,16 +24,28 @@ async function create(search_text, id_room) {
 	}
 
     let songInfo = await ytdl.getBasicInfo(search_text);
+    const priority = await songsRepository.getNextSongPriority(id_room);
 
     return await songsRepository.insert(
         songInfo.videoDetails.title,
         songInfo.videoDetails.ownerChannelName,
         songInfo.videoDetails.video_url,
         songInfo.videoDetails.thumbnails[0].url,
-        1,
+        priority,
         id_room
     );
 }
 
+async function getPlaylist(id_room) {
+    if (!id_room)
+        throw 'Room id cannot be null.';
 
-module.exports = { create }
+    const room = roomsRepository.findById(id_room);
+
+    if (!room)
+        throw 'Room does not exist.';
+
+    return await songsRepository.findAllSongsFromRoom(id_room);
+}
+
+module.exports = { create, getPlaylist }

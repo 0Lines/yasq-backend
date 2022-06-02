@@ -16,6 +16,7 @@ router.post('/users', usersController.createUser);
 
 //Songs
 router.post('/songs', songsController.createSong); 
+router.get('/songs', songsController.getPlaylist); 
 
 module.exports = router; 
 
