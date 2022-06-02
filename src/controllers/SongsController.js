@@ -4,7 +4,7 @@ const songsServices = require('../services/SongsServices')
 async function createSong(req, res, next) {
     const { search_text, id_room } = req.body;
     
-    const song = songsServices.create(search_text, id_room);
+    const song = await songsServices.create(search_text, id_room);
     res.status(200).send(song)
 }
 

@@ -16,7 +16,7 @@ function resultToObject(result) {
         console.log('I should handle errors, but not yet :(');
 
     return new Song({
-        id_room: result.rows[0].id_room ?? '', 
+        id_song: result.rows[0].id_song ?? '', 
         artist: result.rows[0].artist ?? '', 
         music_link: result.rows[0].music_link ?? '', 
         thumbnail_link: result.rows[0].thumbnail_link ?? '', 

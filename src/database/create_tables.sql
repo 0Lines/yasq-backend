@@ -18,12 +18,12 @@ CREATE TABLE IF NOT EXISTS Users (
 
 DROP TABLE IF EXISTS Songs;
 CREATE TABLE IF NOT EXISTS Songs (
-  id_music VARCHAR(50) NOT NULL DEFAULT uuid_generate_v4(),
+  id_song VARCHAR(50) NOT NULL DEFAULT uuid_generate_v4(),
   name VARCHAR(100) NOT NULL,
   artist VARCHAR(50),
   music_link VARCHAR(300) NOT NULL,
   thumbnail_link VARCHAR(300),
   priority INT NOT NULL,
   id_room VARCHAR(50) NOT NULL REFERENCES Rooms(id_room) ON DELETE CASCADE,
-  PRIMARY KEY (id_music)
+  PRIMARY KEY (id_song)
 );
