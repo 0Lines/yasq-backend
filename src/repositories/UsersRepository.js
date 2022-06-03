@@ -1,11 +1,11 @@
-const pool = require('../database/db').pool
+const pool = require('../database/db').pool;
 const User = require('../models/User');
 
 async function insert(nickname, photo_link, id_room) {
     const result = await pool.query(
     `INSERT INTO Users (nickname, photo_link, id_room)
      VALUES ($1, $2, $3)
-     RETURNING *;`,
+     RETURNING *`,
     [nickname, photo_link, id_room]);
 
     return resultToObject(result);

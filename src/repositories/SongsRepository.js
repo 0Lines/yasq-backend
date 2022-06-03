@@ -1,4 +1,4 @@
-const pool = require('../database/db').pool
+const pool = require('../database/db').pool;
 const Song = require('../models/Song');
 
 async function insert(name, artist, music_link, thumbnail_link, priority, id_room) {
@@ -38,6 +38,7 @@ function rowToObject(row) {
 
     return new Song({
         id_song: row.id_song ?? '', 
+        name: row.name ?? '', 
         artist: row.artist ?? '', 
         music_link: row.music_link ?? '', 
         thumbnail_link: row.thumbnail_link ?? '', 
