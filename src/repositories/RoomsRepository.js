@@ -23,6 +23,16 @@ async function findById(id) {
     return resultToObject(result);
 }
 
+async function insertUserInRoom(id_user, id_room) {
+    const result = await pool.query(
+		`UPDATE users
+		SET id_room = ($1)
+		WHERE id_user = ($2);`,
+		[id_room, id_user]);
+
+    return result;
+}
+
 function resultToObject(result) {
     if (!result.rows)
         console.log('I should handle errors, but not yet :(');
@@ -33,4 +43,4 @@ function resultToObject(result) {
     });  
 }
 
-module.exports = { insert, findById }
+module.exports = { insert, findById, insertUserInRoom }

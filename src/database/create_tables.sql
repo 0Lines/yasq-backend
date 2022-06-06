@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Users (
   id_user VARCHAR(50) NOT NULL DEFAULT uuid_generate_v4(),
   nickname VARCHAR(50) NOT NULL,
   photo_link VARCHAR(150),
-  id_room VARCHAR(50) NOT NULL REFERENCES Rooms(id_room) ON DELETE CASCADE,
+  id_room VARCHAR(50) REFERENCES Rooms(id_room) ON DELETE CASCADE,
   PRIMARY KEY (id_user)
 );
 

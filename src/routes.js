@@ -9,6 +9,7 @@ const songsController = require('./controllers/SongsController');
 
 //Rooms
 router.post('/rooms', roomsController.createRoom); 
+router.post('/enterRoom', roomsController.enterRoom); 
 router.get('/rooms', roomsController.findRoom); 
 
 //Users
