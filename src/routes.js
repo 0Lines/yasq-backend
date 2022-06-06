@@ -9,11 +9,11 @@ const songsController = require('./controllers/SongsController');
 
 //Rooms
 router.post('/rooms', roomsController.createRoom); 
-router.post('/enterRoom', roomsController.enterRoom); 
 router.get('/rooms', roomsController.findRoom); 
 
 //Users
 router.post('/users', usersController.createUser); 
+router.put('/enter-room', usersController.enterRoom); 
 
 //Songs
 router.post('/songs', songsController.createSong); 

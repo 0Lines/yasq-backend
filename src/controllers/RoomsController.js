@@ -7,13 +7,6 @@ async function createRoom(req, res, next) {
     res.status(200).send(room);
 }
 
-async function enterRoom(req, res, next) {
-    const { id_user, id_room } = req.body;
-
-    const room = await roomsServices.enter(id_user, id_room);
-    res.status(200).send(room);
-}
-
 async function findRoom(req, res, next) {
     const { id_room } = req.body;
 
@@ -21,4 +14,4 @@ async function findRoom(req, res, next) {
     res.status(200).send(room);
 }
 
-module.exports = { createRoom, findRoom, enterRoom }
+module.exports = { createRoom, findRoom }

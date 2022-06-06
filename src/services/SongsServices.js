@@ -40,7 +40,7 @@ async function getPlaylist(id_room) {
     if (!id_room)
         throw 'Room id cannot be null.';
 
-    const room = roomsRepository.findById(id_room);
+    const room = await roomsRepository.findById(id_room);
 
     if (!room)
         throw 'Room does not exist.';
