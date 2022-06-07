@@ -1,6 +1,5 @@
 const usersServices = require('../services/UsersServices');
 
-//TODO - Create exceptions, check if room exists and lots of other things
 async function createUser (req, res, next) {
     const { nickname, photo_link, id_room } = req.body;
     

@@ -10,7 +10,7 @@ async function createRoom(req, res, next) {
 async function findRoom(req, res, next) {
     const { id_room } = req.body;
 
-    const room = await roomsServices.find(id_room);
+    const room = await roomsServices.validateAndFind(id_room);
     res.status(200).send(room);
 }
 

@@ -1,5 +1,6 @@
 const pool = require('../database/db').pool;
 const Song = require('../models/Song');
+const InvalidInfoException = require('../models/InvalidInfoException');
 
 async function insert(name, artist, music_link, thumbnail_link, priority, id_room) {
     const result = await pool.query(
@@ -34,7 +35,7 @@ async function getNextSongPriority(id_room) {
 
 function rowToObject(row) {
     if (!row)
-        console.log('I should handle errors, but not yet :(');
+        return null;
 
     return new Song({
         id_song: row.id_song ?? '', 
@@ -48,8 +49,8 @@ function rowToObject(row) {
 }
 
 function resultToObjectList(result) {
-    if (!result)
-        console.log('I should handle errors, but not yet :(');
+    if (result.rows.length <= 0)
+        throw new InvalidInfoException('Playlist does not have any songs.');
 
     let songs = []; 
     result.rows.forEach((row) => {

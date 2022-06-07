@@ -1,5 +1,6 @@
 const pool = require('../database/db').pool;
 const Room = require('../models/Room');
+const InvalidInfoException = require('../models/InvalidInfoException');
 
 async function insert(name) {
     const result = await pool.query(
@@ -24,8 +25,8 @@ async function findById(id) {
 }
 
 function resultToObject(result) {
-    if (!result.rows)
-        console.log('I should handle errors, but not yet :(');
+    if (result.rows.length <= 0)
+        return null;
 
     return new Room({
         id_room: result.rows[0].id_room ?? '', 

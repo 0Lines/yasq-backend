@@ -1,30 +1,24 @@
 const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
+const NullException = require('../models/NullException');
+const InvalidInfoException = require('../models/InvalidInfoException');
 const songsRepository = require('../repositories/SongsRepository');
-const roomsRepository = require('../repositories/RoomsRepository');
+const roomsServices = require('../services/RoomsServices');
 
 async function create(search_text, id_room) {
     if (!search_text)
-        throw 'Text or link cannot be null.';
+        throw new NullException('Text or link cannot be null.');
 
-    if (!id_room)
-        throw 'Room id cannot be null.';
-
-    const room = roomsRepository.findById(id_room);
-
-    if (!room)
-        throw 'Room does not exist.';
+    const room = await roomsServices.validateAndFind(id_room); 
 
     const validUrl = await ytdl.validateURL(search_text);
     const validPlaylist = await ytpl.validateID(search_text);
 
-	if(!validUrl && !validPlaylist) {
-	    console.log('Handle invalid link :P');
-		return;
-	}
+	if(!validUrl && !validPlaylist)
+        throw new InvalidInfoException('Invalid song link.')
 
     let songInfo = await ytdl.getBasicInfo(search_text);
-    const priority = await songsRepository.getNextSongPriority(id_room);
+    const priority = await songsRepository.getNextSongPriority(room.id_room);
 
     return await songsRepository.insert(
         songInfo.videoDetails.title,
@@ -32,20 +26,14 @@ async function create(search_text, id_room) {
         songInfo.videoDetails.video_url,
         songInfo.videoDetails.thumbnails[0].url,
         priority,
-        id_room
+        room.id_room
     );
 }
 
 async function getPlaylist(id_room) {
-    if (!id_room)
-        throw 'Room id cannot be null.';
+    const room = await roomsServices.validateAndFind(id_room); 
 
-    const room = await roomsRepository.findById(id_room);
-
-    if (!room)
-        throw 'Room does not exist.';
-
-    return await songsRepository.findAllSongsFromRoom(id_room);
+    return await songsRepository.findAllSongsFromRoom(room.id_room);
 }
 
 module.exports = { create, getPlaylist }
