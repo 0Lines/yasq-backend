@@ -33,6 +33,25 @@ async function getNextSongPriority(id_room) {
     return result.rows[0].priority + 1;
 }
 
+async function findSong(id_song, id_room) {
+    const result = await pool.query(
+        `SELECT *
+         FROM Songs
+         WHERE id_song = ($1)
+         AND id_room = ($2)`,
+        [id_song, id_room]);
+
+    return rowToObject(result.rows[0]);
+}
+
+async function remove(id_song, id_room) {
+    await pool.query(
+        `DELETE FROM Songs
+         WHERE id_song = ($1)
+         AND id_room = ($2)`,
+        [id_song, id_room]);
+} 
+
 function rowToObject(row) {
     if (!row)
         return null;
@@ -60,4 +79,11 @@ function resultToObjectList(result) {
     return songs;
 }
 
-module.exports = { insert, findAllSongsFromRoom, getNextSongPriority }
+module.exports =
+{
+    insert,
+    findAllSongsFromRoom,
+    findSong,
+    getNextSongPriority,
+    remove
+}

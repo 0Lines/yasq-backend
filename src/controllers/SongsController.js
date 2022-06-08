@@ -1,10 +1,17 @@
 const songsServices = require('../services/SongsServices');
 
-async function createSong(req, res, next) {
+async function addSong(req, res, next) {
     const { search_text, id_room } = req.body;
     
-    const song = await songsServices.create(search_text, id_room);
+    const song = await songsServices.add(search_text, id_room);
     res.status(200).send(song);
+}
+
+async function removeSong(req, res, next) {
+    const { id_song, id_room } = req.body;
+    
+    await songsServices.remove(id_song, id_room);
+    res.status(200).send('Song has been removed.');
 }
 
 async function getPlaylist(req, res, next) {
@@ -14,4 +21,4 @@ async function getPlaylist(req, res, next) {
     res.status(200).send(playlist);
 }
 
-module.exports = { createSong, getPlaylist }
+module.exports = { addSong, getPlaylist, removeSong }

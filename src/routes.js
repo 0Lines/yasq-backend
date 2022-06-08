@@ -16,8 +16,9 @@ router.post('/users', usersController.createUser);
 router.put('/enter-room', usersController.enterRoom); 
 
 //Songs
-router.post('/songs', songsController.createSong); 
+router.post('/songs', songsController.addSong); 
 router.get('/songs', songsController.getPlaylist); 
+router.delete('/songs', songsController.removeSong); 
 
 module.exports = router; 
 
