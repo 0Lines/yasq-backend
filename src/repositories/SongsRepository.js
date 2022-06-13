@@ -79,8 +79,7 @@ function resultToObjectList(result) {
     return songs;
 }
 
-module.exports =
-{
+module.exports = {
     insert,
     findAllSongsFromRoom,
     findSong,

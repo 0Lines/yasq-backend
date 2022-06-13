@@ -15,7 +15,7 @@ async function removeSong(req, res, next) {
 }
 
 async function getPlaylist(req, res, next) {
-    const { id_room } = req.body;
+    const id_room = req.params.id_room;
 
     const playlist = await songsServices.getPlaylist(id_room);
     res.status(200).send(playlist);

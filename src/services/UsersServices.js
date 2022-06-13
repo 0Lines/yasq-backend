@@ -30,4 +30,10 @@ async function enterRoom(id_user, id_room) {
     return await usersRepository.insertUserInRoom(id_user, room.id_room);
 }
 
-module.exports = { create, enterRoom }
+async function getParticipantsFromRoom(id_room) { 
+    const room = await roomsServices.validateAndFind(id_room);
+
+    return await usersRepository.getParticipantsFromRoom(room.id_room);
+}
+
+module.exports = { create, enterRoom, getParticipantsFromRoom }

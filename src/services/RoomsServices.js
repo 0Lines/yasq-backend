@@ -20,11 +20,4 @@ async function validateAndFind(id_room) {
     return room;
 }
 
-async function getParticipants(id_room) {
-	validateAndFind(id_room);
-
-    const participants = await roomsRepository.getParticipants(id_room);
-    return participants;
-}
-
-module.exports = { create, validateAndFind, getParticipants }
+module.exports = { create, validateAndFind }

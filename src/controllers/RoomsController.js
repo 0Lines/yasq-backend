@@ -1,4 +1,5 @@
 const roomsServices = require('../services/RoomsServices');
+const usersServices = require('../services/UsersServices');
 
 async function createRoom(req, res, next) {
     const { name } = req.body;
@@ -8,7 +9,7 @@ async function createRoom(req, res, next) {
 }
 
 async function findRoom(req, res, next) {
-    const { id_room } = req.body;
+    const id_room = req.params.id_room;
 
     const room = await roomsServices.validateAndFind(id_room);
     res.status(200).send(room);
@@ -17,7 +18,7 @@ async function findRoom(req, res, next) {
 async function getParticipants(req, res, next) {
     const id_room = req.params.id_room;
 
-    const participants = await roomsServices.getParticipants(id_room);
+    const participants = await usersServices.getParticipantsFromRoom(id_room);
     res.status(200).send(participants);
 }
 

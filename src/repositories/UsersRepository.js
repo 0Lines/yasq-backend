@@ -33,6 +33,21 @@ async function insertUserInRoom(id_user, id_room) {
     return resultToObject(result);
 }
 
+async function getParticipantsFromRoom(id_room) {
+    const result = await pool.query(
+		`SELECT
+			nickname,
+			photo_link
+		FROM Users
+		WHERE id_room = ($1)`,
+		[id_room]);
+
+	if (result.rows.length <= 0)
+        return [];
+
+    return result.rows.map(row => new User({ ...row }));
+}
+
 function resultToObject(result) {
     if (result.rows.length <= 0)
         return null;
@@ -45,4 +60,9 @@ function resultToObject(result) {
     });  
 }
 
-module.exports = { insert, findById, insertUserInRoom }
+module.exports = {
+    insert,
+    findById,
+    insertUserInRoom,
+    getParticipantsFromRoom
+}
