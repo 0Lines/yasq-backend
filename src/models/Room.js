@@ -2,9 +2,9 @@ class Room {
     id_room = "";
     name = "";
 
-    constructor(params) {
-        this.id_room = params.id_room;
-        this.name = params.name;
+    constructor({name, id_room}) {
+        this.id_room = id_room;
+        this.name = name;
     }
 }
   

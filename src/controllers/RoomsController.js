@@ -14,4 +14,11 @@ async function findRoom(req, res, next) {
     res.status(200).send(room);
 }
 
-module.exports = { createRoom, findRoom }
+async function getParticipants(req, res, next) {
+    const id_room = req.params.id_room;
+
+    const participants = await roomsServices.getParticipants(id_room);
+    res.status(200).send(participants);
+}
+
+module.exports = { createRoom, findRoom, getParticipants }

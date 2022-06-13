@@ -10,6 +10,7 @@ const songsController = require('./controllers/SongsController');
 //Rooms
 router.post('/rooms', roomsController.createRoom); 
 router.get('/rooms', roomsController.findRoom); 
+router.get('/room-participants/:id_room', roomsController.getParticipants); 
 
 //Users
 router.post('/users', usersController.createUser); 
@@ -20,5 +21,5 @@ router.post('/songs', songsController.addSong);
 router.get('/songs', songsController.getPlaylist); 
 router.delete('/songs', songsController.removeSong); 
 
-module.exports = router; 
+module.exports = router;
 
