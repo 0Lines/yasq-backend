@@ -12,7 +12,7 @@ function createSocketServer(expressServer) {
 	return io;
 }
 
-function registerSocketEvents(io) {
+function registerSocketEvents(io) { //TODO MAYBE RETHINK THIS FUNCTION LOCATION / USE ???
 	io.on("connection", (socket) => {
 
 		console.log("a user connected");

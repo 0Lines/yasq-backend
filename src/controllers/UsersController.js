@@ -11,6 +11,7 @@ async function enterRoom(req, res, next) {
     const { id_user, id_room } = req.body;
 
     const user = await usersServices.enterRoom(id_user, id_room);
+	global.socket.emit('retrieveFromServer', "=)"); 
     res.status(200).send(user);
 }
 
