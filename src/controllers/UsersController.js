@@ -10,12 +10,11 @@ async function createUser (req, res, next) {
 
 async function enterRoom(req, res, next) {
     const { id_user, id_room } = req.body;
-    const user = await usersServices.enterRoom(id_user, id_room);
+    const room = await usersServices.enterRoom(id_user, id_room);
 
 
     emitRefreshUsers(id_room);
-    //global.socket.join(id_room);
-    res.status(200).send(user);
+    res.status(200).send(room);
 }
 
 function emitRefreshUsers(id_room) {

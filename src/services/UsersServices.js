@@ -27,7 +27,9 @@ async function enterRoom(id_user, id_room) {
 
     const room = await roomsServices.validateAndFind(id_room);
 
-    return await usersRepository.insertUserInRoom(id_user, room.id_room);
+    await usersRepository.insertUserInRoom(id_user, room.id_room);
+
+    return room;
 }
 
 async function getParticipantsFromRoom(id_room) { 
