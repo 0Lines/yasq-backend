@@ -69,7 +69,7 @@ function rowToObject(row) {
 
 function resultToObjectList(result) {
     if (result.rows.length <= 0)
-        throw new InvalidInfoException('Playlist does not have any songs.');
+        return null;
 
     let songs = []; 
     result.rows.forEach((row) => {
