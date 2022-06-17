@@ -26,7 +26,7 @@ async function getPlaylist(req, res, next) {
 
 function emitRefreshPlaylist(id_room) {
     if (id_room)
-        global.socket.emit('refreshPlaylist', 'Refresh Playlist =)'); 
+        global.socket.to(id_room).emit('refreshPlaylist', 'Refresh Playlist =)'); 
 }
 
 module.exports = { addSong, getPlaylist, removeSong }

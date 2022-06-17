@@ -5,20 +5,17 @@ function createSocketServer(expressServer) {
 	const server = createServer(expressServer);
 	const io = new Server(server, { cors: { origin: "*" }});
 
-	io.listen(process.env.SOCKET_PORT, () => {
-		console.log(`Socket listening on port ${process.env.SOCKET_PORT}`);
-	});
+    console.log(`Socket listening on port ${process.env.SOCKET_PORT}`);
+	io.listen(process.env.SOCKET_PORT);
 
 	return io;
 }
 
 function registerSocketEvents(io) { //TODO MAYBE RETHINK THIS FUNCTION LOCATION / USE ???
 	io.on("connection", (socket) => {
+        console.log("User connected");
 
-		console.log("a user connected");
-
-		socket.on("eventFromClientTest1", (msg) => retrieveToClientItsOwnMessage(msg, "eventFromClientTest1"));
-		socket.on("eventFromClientTest2", (msg) => retrieveToClientItsOwnMessage(msg, "eventFromClientTest2"));
+		socket.on("subscribeToRoom", (id_room) => socket.join(id_room));
 	});
 }
 
