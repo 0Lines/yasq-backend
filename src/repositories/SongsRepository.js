@@ -59,15 +59,7 @@ function rowToObject(row) {
 }
 
 function resultToObjectList(result) {
-    if (result.rows.length <= 0)
-        return null;
-
-    let songs = []; 
-    result.rows.forEach((row) => {
-        songs.push(rowToObject(row));
-    });
-
-    return songs;
+	return result.rows.map(row => new Song(row));
 }
 
 module.exports = {

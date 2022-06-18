@@ -4,11 +4,11 @@ class User {
     photo_link = "";
     id_room = "";
 
-    constructor(params) {
-        this.id_user = params.id_user;
-        this.nickname = params.nickname;
-        this.photo_link = params.photo_link;
-        this.id_room = params.id_room;
+    constructor({ id_user, nickname, photo_link, id_room }) {
+        this.id_user = id_user;
+        this.nickname = nickname;
+        this.photo_link = photo_link;
+        this.id_room = id_room;
     }
 }
   

@@ -42,9 +42,6 @@ async function getParticipantsFromRoom(id_room) {
 		WHERE id_room = ($1)`,
 		[id_room]);
 
-	if (result.rows.length <= 0)
-        return [];
-
     return result.rows.map(row => new User({ ...row }));
 }
 
@@ -52,12 +49,7 @@ function resultToObject(result) {
     if (result.rows.length <= 0)
         return null;
 
-    return new User({
-        id_user: result.rows[0].id_user ?? '', 
-        nickname: result.rows[0].nickname ?? '', 
-        photo_link: result.rows[0].photo_link ?? '', 
-        id_room: result.rows[0].id_room ?? null, 
-    });  
+    return new User({ ...result.rows[0] });  
 }
 
 module.exports = {
