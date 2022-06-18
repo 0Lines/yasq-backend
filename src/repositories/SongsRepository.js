@@ -1,13 +1,12 @@
 const pool = require('../database/db').pool;
 const Song = require('../models/Song');
-const InvalidInfoException = require('../models/InvalidInfoException');
 
-async function insert(name, artist, music_link, thumbnail_link, priority, id_room) {
+async function insert(name, artist, videoId, music_link, thumbnail_link, priority, id_room) {
     const result = await pool.query(
-    `INSERT INTO Songs (name, artist, music_link, thumbnail_link, priority, id_room)
-     VALUES ($1, $2, $3, $4, $5, $6)
+    `INSERT INTO Songs (name, artist, videoid, music_link, thumbnail_link, priority, id_room)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
      RETURNING *;`,
-    [name, artist, music_link, thumbnail_link, priority, id_room]);
+    [name, artist, videoId, music_link, thumbnail_link, priority, id_room]);
 
     return rowToObject(result.rows[0]);
 }
@@ -56,15 +55,7 @@ function rowToObject(row) {
     if (!row)
         return null;
 
-    return new Song({
-        id_song: row.id_song ?? '', 
-        name: row.name ?? '', 
-        artist: row.artist ?? '', 
-        music_link: row.music_link ?? '', 
-        thumbnail_link: row.thumbnail_link ?? '', 
-        priority: row.priority ?? '', 
-        id_room: row.id_room ?? '', 
-    });  
+    return new Song(row);  
 }
 
 function resultToObjectList(result) {

@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS Songs (
   id_song VARCHAR(50) NOT NULL DEFAULT uuid_generate_v4(),
   name VARCHAR(100) NOT NULL,
   artist VARCHAR(50),
+  videoId VARCHAR(50),
   music_link VARCHAR(300) NOT NULL,
   thumbnail_link VARCHAR(300),
   priority INT NOT NULL,

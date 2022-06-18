@@ -19,10 +19,12 @@ async function add(search_text, id_room) {
 
     let songInfo = await ytdl.getBasicInfo(search_text);
     const priority = await songsRepository.getNextSongPriority(room.id_room);
-
+    
+    //TODO: passar um objeto por parâmetro, pra não precisar ficar "catando" os dados: insert(songInfo.videoDetails)
     return await songsRepository.insert(
         songInfo.videoDetails.title,
         songInfo.videoDetails.ownerChannelName,
+        songInfo.videoDetails.videoId,
         songInfo.videoDetails.video_url,
         songInfo.videoDetails.thumbnails[0].url,
         priority,
