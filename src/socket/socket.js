@@ -11,17 +11,14 @@ function createSocketServer(expressServer) {
 	return io;
 }
 
-function registerSocketEvents(io) { //TODO MAYBE RETHINK THIS FUNCTION LOCATION / USE ???
+function registerSocketEvents(io) {
 	io.on("connection", (socket) => {
         console.log("User connected");
 
 		socket.on("subscribeToRoom", (id_room) => socket.join(id_room));
+		socket.on("pause", (id_room) => io.to(id_room).emit("pause"));
+		socket.on("play", (id_room) => io.to(id_room).emit("play"));
 	});
-}
-
-function retrieveToClientItsOwnMessage(msg, eventReceived) { //TODO THIS FUNCTION IS JUST FOR TESTING
-	console.log("Client sent to server '" + JSON.stringify(msg) + "' using '" + eventReceived + "' event. Sending back to client its own message via 'retrieveFromServer' event");
-	global.socket.emit('retrieveFromServer', msg); 
 }
 
 module.exports = { createSocketServer, registerSocketEvents }
