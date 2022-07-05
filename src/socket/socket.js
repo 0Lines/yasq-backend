@@ -28,26 +28,25 @@ function registerSocketEvents(io) {
         });
 
 		socket.on("pause", (id_room) => {
-            rooms[id_room].stoppedAt = Date.now();
+			const room = rooms[id_room];
 
-            rooms[id_room].isPlaying = false;
+            room.stoppedAt = Date.now();
+            room.isPlaying = false;
 
             io.to(id_room).emit("pause");
         });
 
         socket.on("play", (id_room) => {
-            let room = rooms[id_room];
+            const room = rooms[id_room];
 
-            console.log(room)
-
-            const now = Date.now();
-            if (room.startedAt)
-                room.startedAt = now - ((room.isPlaying ? now : room.stoppedAt) - room.startedAt);
-            else
-                room.startedAt = now;
-
-            room.isPlaying = true;
-            io.to(id_room).emit("play", (now - room.startedAt) / 1000);
+            if(!room.isPlaying) {
+				const now = Date.now();
+				const songElapsedTime = room.stoppedAt - room.startedAt;
+				room.startedAt = now - songElapsedTime;
+				room.isPlaying = true;
+				
+				io.to(id_room).emit("play", songElapsedTime / 1000);
+			}
         });
 
         socket.on("getCurrentState", (id_room) => {
