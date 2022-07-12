@@ -1,7 +1,7 @@
 const { createServer } = require('http');
 const { Server } = require("socket.io");
 
-let rooms = [];
+global.rooms = [];
 
 function createSocketServer(expressServer) {
 	const server = createServer(expressServer);
@@ -19,8 +19,9 @@ function registerSocketEvents(io) {
 
         socket.on("subscribeToRoom", (id_room) => {
             socket.join(id_room);
-            if (rooms[id_room] == undefined)
-                rooms[id_room] = {
+            if (global.rooms[id_room] == undefined)
+                global.rooms[id_room] = {
+					id_song: undefined,
                     isPlaying: false,
                     startedAt: 0,
                     stoppedAt: 0,
@@ -28,21 +29,22 @@ function registerSocketEvents(io) {
         });
 
 		socket.on("pause", (id_room) => {
-			const room = rooms[id_room];
+			const room = global.rooms[id_room];
 
-            room.stoppedAt = Date.now();
-            room.isPlaying = false;
+			if(room.isPlaying) {
+				room.stoppedAt = Date.now();
+				room.isPlaying = false;
 
-            io.to(id_room).emit("pause");
+				io.to(id_room).emit("pause");
+			}
         });
 
         socket.on("play", (id_room) => {
-            const room = rooms[id_room];
+            const room = global.rooms[id_room];
 
             if(!room.isPlaying) {
-				const now = Date.now();
 				const songElapsedTime = room.stoppedAt - room.startedAt;
-				room.startedAt = now - songElapsedTime;
+				room.startedAt = Date.now() - songElapsedTime;
 				room.isPlaying = true;
 				
 				io.to(id_room).emit("play", songElapsedTime / 1000);
@@ -50,13 +52,18 @@ function registerSocketEvents(io) {
         });
 
         socket.on("getCurrentState", (id_room) => {
-            const room = rooms[id_room];
-            const now = Date.now();
+            const room = global.rooms[id_room];
 
             io.to(id_room).emit("getCurrentState", {
                 isPlaying: room.isPlaying,
-                startFrom: (((room.isPlaying ? now : room.stoppedAt) - room.startedAt) / 1000),
+                startFrom: ((room.isPlaying ? Date.now() : room.stoppedAt) - room.startedAt) / 1000,
             });
+        });
+
+		socket.on("changeCurrentSong", ({id_room, id_song}) => {
+            const room = global.rooms[id_room];
+			room.id_song = id_song;
+            io.to(id_room).emit("changeCurrentSong", id_song);
         });
 	});
 }
