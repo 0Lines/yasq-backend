@@ -54,7 +54,7 @@ function registerSocketEvents(io) {
         socket.on("getCurrentState", (id_room) => {
             const room = global.rooms[id_room];
 
-            io.to(id_room).emit("getCurrentState", {
+            socket.emit("getCurrentState", {
 				currentSongId: room.currentSongId,
                 isPlaying: room.isPlaying,
                 startFrom: ((room.isPlaying ? Date.now() : room.stoppedAt) - room.startedAt) / 1000,
@@ -64,6 +64,8 @@ function registerSocketEvents(io) {
 		socket.on("changeCurrentSong", ({id_room, id_song}) => {
             const room = global.rooms[id_room];
 			room.currentSongId = id_song;
+			room.startFrom = 0;
+			room.isPlaying = false;
             io.to(id_room).emit("changeCurrentSong", id_song);
         });
 	});

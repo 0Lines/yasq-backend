@@ -36,7 +36,16 @@ function roomHasPlayingSong(id_room) {
 function changeRoomsCurrentSong(id_room, song) {
 	const room = global.rooms[id_room];
 	room.currentSongId = song.id_song;
-	global.socket.to(id_room).emit("changeCurrentSong", song);
+	room.startedAt = 0;
+	room.stoppedAt = 0;
+	room.isPlaying = false;
+
+	global.socket.to(id_room).emit("getCurrentState2", {
+		currentSongId: song.id_song,
+		isPlaying: false,
+		startFrom: 0,
+		song: song,
+	});
 }
 
 module.exports = { addSong, getPlaylist, removeSong }
