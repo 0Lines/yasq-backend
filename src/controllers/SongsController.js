@@ -3,11 +3,11 @@ const songsServices = require('../services/SongsServices');
 async function addSong(req, res, next) {
     const { search_text, id_room } = req.body;
     const song = await songsServices.add(search_text, id_room);
-
-    emitRefreshPlaylist(id_room);
+	
+    global.socket.to(id_room).emit("refreshPlaylist", 'Refresh Playlist =)'); 
 
 	if (!roomHasPlayingSong(id_room))
-		changeRoomsCurrentSong(id_room, song.id_song);
+		changeRoomsCurrentSong(id_room, song);
 
     res.status(200).send(song);
 }
@@ -28,20 +28,15 @@ async function getPlaylist(req, res, next) {
     res.status(200).send(playlist);
 }
 
-function emitRefreshPlaylist(id_room) {
-    if (id_room)
-        global.socket.to(id_room).emit('refreshPlaylist', 'Refresh Playlist =)'); 
-}
-
 function roomHasPlayingSong(id_room) {
 	const room = global.rooms[id_room];
-	return Boolean(room.id_song);
+	return Boolean(room.currentSongId);
 }
 
-function changeRoomsCurrentSong(id_room, id_song) {
+function changeRoomsCurrentSong(id_room, song) {
 	const room = global.rooms[id_room];
-	room.id_song = id_song;
-	global.socket.to(id_room).emit("changeCurrentSong", id_song);
+	room.currentSongId = song.id_song;
+	global.socket.to(id_room).emit("changeCurrentSong", song);
 }
 
 module.exports = { addSong, getPlaylist, removeSong }
