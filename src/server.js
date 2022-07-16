@@ -18,6 +18,8 @@ app.use((error, req, res, next) => {
     res.status(error.statusCode ?? 400).send(error.message);
 });
 
+global.rooms = [];
+
 global.socket = createSocketServer(app);
 registerSocketEvents(global.socket);
 
