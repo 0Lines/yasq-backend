@@ -5,18 +5,14 @@ class Jukebox {
 	stoppedAt = 0;
 
     constructor() {
-        this.resetJukebox();
+        this.currentSongId = "";
+		this.isPlaying = false;
+		this.startedAt = 0;
+		this.stoppedAt = 0;
     }
 
 	hasSong() {
 		return this.currentSongId != "";
-	}
-
-	resetJukebox() {
-		this.currentSongId = "";
-		this.isPlaying = false;
-		this.startedAt = 0;
-		this.stoppedAt = 0;
 	}
 
 	getSongElapsedTime() {
@@ -47,9 +43,8 @@ class Jukebox {
 	}
 
 	changeSong(newSongId) {
-		this.resetJukebox();
 		this.currentSongId = newSongId;
-		this.play();
+		this.startedAt = Date.now();
 	}
 }
   
